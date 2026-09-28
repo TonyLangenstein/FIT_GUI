@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Don't forget to set system property -Dlog4j2.contextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelectorto make all loggers asynchronous. -->
+
+-<Configuration status="WARN">
+
+
+-<Properties>
+
+<Property name="filePattern">${date:yyyy-MM-dd-HH-MM-SSSS}</Property>
+
+</Properties>
+
+
+-<Appenders>
+
+<!-- Async Loggers will auto-flush in batches, so switch off immediateFlush. -->
+
+
+
+-<RandomAccessFile name="RandomAccessFile" append="false" immediateFlush="false" filename="PES_${filePattern}.log">
+
+
+-<PatternLayout>
+
+<Pattern>%d %p %c{1.} [%t] %m %ex%n</Pattern>
+
+</PatternLayout>
+
+</RandomAccessFile>
+
+</Appenders>
+
+
+-<Loggers>
+
+
+-<Root includeLocation="false" level="info">
+
+<AppenderRef ref="RandomAccessFile"/>
+
+</Root>
+
+</Loggers>
+
+</Configuration>

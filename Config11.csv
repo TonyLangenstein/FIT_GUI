@@ -1,0 +1,56 @@
+under100Gap,0.201
+under150Gap,0.401
+over150Gap,0.81
+TF_Input_File_Name,"Morning Straddles - New GUI Download.csv"  
+TABLEDATA_FILENAME,"TableDate.txt"
+TF_Date_Column,0
+TF_Symbol_Column,1
+TF_MaxPrice_Column,18
+TF_MinMove_Column,6
+TF_AveMove_Column,7
+TF_ExpMove_Column,8
+TF_Close_Column,9
+TF_BuyWiggle_Column,19
+TF_MinWait_Column,47
+TF_MaxWait_Column,48
+TF_PercentGoal_Column,49
+TF_ChaseTime_Column,50
+TF_ChaseAmount_Column,51
+TF_TradeAmount1_Column,52
+TF_TradeAmount2_Column,53
+TF_TradeAmount3_Column,54
+TF_TradeAmount4_Column,55
+TF_TradeAmount5_Column,56
+TF_TradeAmount6_Column,57
+TF_TradeAmount7_Column,58
+TF_TradeAmount8_Column,59
+TF_TradeAmount9_Column,60
+OHLC_Input_File_Name,"Morning Straddles - GenQData.csv"
+OHLC_Output_File_Name,"Updated_OHLC_Data.csv"
+OHLC_Date_Column,0
+OHLC_Symbol_Column,1
+OHLC_DayOfWeek_Column,2
+OHLC_NumberValidColumns,3
+DG_Input_File_Name,"Morning Straddles - DayGenData.CSV"
+DG_Output_File_Name,"Updated Morning Straddles - DayGenData.CSV"
+DG_Date_Column,0
+DG_Symbol_Column,1
+DG_DayOfWeek_Column,2
+DG_OpenInterest_Column,3
+DG_BidAsk_Column,4
+DG_StartPrice_Column,9
+DG_1SeriesLater_Column,10
+DG_4SeriesLater_Column,11
+DG_ThinkBack_Column,12
+DG_BuyWiggle_Column,19
+DG_ATMNightB4_Column,20
+DG_IVNightB4_Column,21
+DG_IV1SeriesLater_Column,22
+DG_IV4SeriesLater_Column,23
+DG_NumberValidColumns,24
+DG_OpenInterestStrikes,"11"
+DG_BidAskStrikes,"3"
+DG_InterestRate,0.01
+DG_MinNumberContracts,10.0
+DG_BidAskGreenPercent,0.01
+DG_BidAskYellowPercent,0.03

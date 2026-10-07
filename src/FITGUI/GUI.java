@@ -135,6 +135,7 @@ public class GUI extends javax.swing.JFrame
    private static boolean autoProcess = false;  //  -P arg
    private static boolean autoGUIOnly = false;  //  -G arg
    private static boolean autoShutDown = false; //  -S arg
+   private static boolean loadingPrefs = false;
 
    // Variable used for dealing with when to start and stop processing and auto shut down of program.
    private static LocalTime openTime = LocalTime.now();
@@ -166,6 +167,7 @@ public class GUI extends javax.swing.JFrame
    public static final String maxFundsDefault = "";
    public static final String brokerNameDefault = "";
    private static boolean prevKillOpenStraddleOrdersSelected = false;
+   private static boolean initialLoadComplete = false;
    
    private static Log4J2AsyncLogger LogData = new Log4J2AsyncLogger();
 
@@ -893,7 +895,8 @@ public class GUI extends javax.swing.JFrame
         popOutTableWindow();
         popOutTabPanel(Monitor_Panel, "Positions ... ");
         loadWindowPositions();
-   }
+        initialLoadComplete = true;
+    }
 
 // SOMEDAY I WILL UNDERSTAND WHY THIS WON"T LET ME DO THIS.   
     private void Load_Config( ) {
@@ -955,8 +958,8 @@ public class GUI extends javax.swing.JFrame
    }
 
    // Save the program preferences to a file
-   private void SavePreferences()
-      {
+    private void SavePreferences() {
+        if (!loadingPrefs) {
       try
          {
          // Save the Access and Refresh tokens to a file so we can load then later.
@@ -1005,7 +1008,6 @@ public class GUI extends javax.swing.JFrame
          Utility.dumpExceptionInfo(ex);
          ex.printStackTrace();
          }
-
       try {
            while ( !GUIData.LockOrderSocketData() ) { Utility.hybridPrecisionWait(10);}
            GUIData.SetOrdersSocketData( GUIData.LoadPrefs );
@@ -1013,11 +1015,15 @@ public class GUI extends javax.swing.JFrame
             Utility.dumpExceptionInfo(e);
             e.printStackTrace();
       }
+        } else {
+            // Prefs are loading so skip the save command for now.
       }
+    }
 
    // load the program preferences from a file
    private void LoadPreferences(boolean getName)
       {
+          loadingPrefs = true;
       try
          {
          String fileNameToUse = PREFERENCES_FILENAME;
@@ -1123,8 +1129,10 @@ public class GUI extends javax.swing.JFrame
                         Google_Spreadsheet_ID_Text_Field.setText( values[1] );
                         // Update the spreadsheet name only if not already read in from preferences.  
                         //  Want to make sure the Title is first.
-                        if ( Google_Spreadsheet_Name_Label.getText().contains("Spreadsheet Name")) {
-                            Google_Spreadsheet_Name_Label.setText( GoogleOperations.getSpreadsheetTitle( ) );
+                        if (initialLoadComplete) {
+                            if ( Google_Spreadsheet_Name_Label.getText().contains("Spreadsheet Name")) {
+                                Google_Spreadsheet_Name_Label.setText( GoogleOperations.getSpreadsheetTitle( ) );
+                            }
                         }
                         break;
                     case "Download Tab Name":
@@ -1175,6 +1183,7 @@ public class GUI extends javax.swing.JFrame
             }
             inputStream.close();
             }
+            loadingPrefs = false;
          }
       catch (Exception ex)
          {
@@ -4939,10 +4948,11 @@ public class GUI extends javax.swing.JFrame
             GUIData.setGoogleSpreadsheetID( Google_Spreadsheet_ID_Text_Field.getText() );
             Google_Spreadsheet_Name_Label.setText( GoogleOperations.getSpreadsheetTitle() );
         }
+        SavePreferences();
     }//GEN-LAST:event_Google_Spreadsheet_ID_Text_FieldActionPerformed
 
     private void Gen_Prices_Tab_Name_Text_FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Gen_Prices_Tab_Name_Text_FieldActionPerformed
-        // TODO add your handling code here:
+        SavePreferences();
     }//GEN-LAST:event_Gen_Prices_Tab_Name_Text_FieldActionPerformed
 
 /*    private void SelectSourceFileActionPerformed(java.awt.event.ActionEvent evt) {                                                 
@@ -4956,7 +4966,7 @@ public class GUI extends javax.swing.JFrame
     }//GEN-LAST:event_GoogleGenDayDataActionPerformed
 
     private void Download_Tab_Name_Text_FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Download_Tab_Name_Text_FieldActionPerformed
-        // TODO add your handling code here:
+        SavePreferences();
     }//GEN-LAST:event_Download_Tab_Name_Text_FieldActionPerformed
 
     private void GoogleDateDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GoogleDateDataActionPerformed
@@ -4968,7 +4978,7 @@ public class GUI extends javax.swing.JFrame
     }//GEN-LAST:event_GoogleDateDataActionPerformed
 
     private void Initial_Sell_2_Orders_Check_BoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Initial_Sell_2_Orders_Check_BoxActionPerformed
-        // TODO add your handling code here:
+        SavePreferences();
     }//GEN-LAST:event_Initial_Sell_2_Orders_Check_BoxActionPerformed
 
     private void Log_More_Data_Check_BoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Log_More_Data_Check_BoxActionPerformed
@@ -4981,34 +4991,35 @@ public class GUI extends javax.swing.JFrame
             LogData.SetLogLevel( Log4J2AsyncLogger.LogLevelOptions.Critical );
             GUIData.setLogMoreData(false);
         }
+        SavePreferences();
     }//GEN-LAST:event_Log_More_Data_Check_BoxActionPerformed
 
     private void GUI_Only_Number_Of_Strikes_Text_FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GUI_Only_Number_Of_Strikes_Text_FieldActionPerformed
-        // TODO add your handling code here:
+        SavePreferences();
     }//GEN-LAST:event_GUI_Only_Number_Of_Strikes_Text_FieldActionPerformed
 
     private void Kill_Open_Orders_Check_BoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Kill_Open_Orders_Check_BoxActionPerformed
-        // TODO add your handling code here:
+        SavePreferences();
     }//GEN-LAST:event_Kill_Open_Orders_Check_BoxActionPerformed
 
     private void OrderProcessingSpeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OrderProcessingSpeedActionPerformed
-        // TODO add your handling code here:
+        SavePreferences();
     }//GEN-LAST:event_OrderProcessingSpeedActionPerformed
 
     private void StartMinutesB4OpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartMinutesB4OpenActionPerformed
-        // TODO add your handling code here:
+        SavePreferences();
     }//GEN-LAST:event_StartMinutesB4OpenActionPerformed
 
     private void Capture_Duration_Text_FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Capture_Duration_Text_FieldActionPerformed
-        // TODO add your handling code here:
+        SavePreferences();
     }//GEN-LAST:event_Capture_Duration_Text_FieldActionPerformed
 
     private void Number_Of_Strikes_Text_FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Number_Of_Strikes_Text_FieldActionPerformed
-        // TODO add your handling code here:
+        SavePreferences();
     }//GEN-LAST:event_Number_Of_Strikes_Text_FieldActionPerformed
 
     private void OpenTimeTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenTimeTextFieldActionPerformed
-        // TODO add your handling code here:
+        SavePreferences();
     }//GEN-LAST:event_OpenTimeTextFieldActionPerformed
 
     private void Save_Account_Info_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Save_Account_Info_ButtonActionPerformed
@@ -5022,6 +5033,10 @@ public class GUI extends javax.swing.JFrame
     private void AppKey_Text_FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AppKey_Text_FieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_AppKey_Text_FieldActionPerformed
+
+    private void jComboBoxQuoteSpeedActionPerformed(java.awt.event.ActionEvent evt) {                                                    
+        SavePreferences();
+    }                                                   
 
     private void Pop_Up_Window_To_Login() {
         // https://api.schwabapi.com/v1/oauth/authorize?client_id={CONSUMER _KEY}&redirect_uri={APP_CALLBACK_URL}
